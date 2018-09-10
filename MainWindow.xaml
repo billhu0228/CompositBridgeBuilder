@@ -36,6 +36,8 @@
                 <GradientStop Color="#FF3CACDC" Offset="0"/>
                 <GradientStop Color="White" Offset="1"/>
             </LinearGradientBrush>
+            <System:Double x:Key="LabelW">140</System:Double>
+            <System:Double x:Key="LabelH">30</System:Double>
         </ResourceDictionary>
 
 
@@ -44,27 +46,14 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="settings" />
-            <Button>
-                <StackPanel Orientation="Horizontal">
-                    <Rectangle Width="20"
-                   Height="20"
-                   Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_cupcake}" />
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                    <TextBlock Margin="4 0 0 0"
-                   VerticalAlignment="Center"
-                   Text="deploy cupcakes" />
-                </StackPanel>
-            </Button>
+            <Button Content="Open" />
+            <Button Content="SaveAs" />            
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
     <Grid>
-        <TabControl  Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabItems" >
-            <TabItem Header="整体布置" FontSize="9" FontFamily="HYQiHei 75S" IsSelected="True" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}" d:IsLocked="True">
+        <TabControl  Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabItems">
+            <TabItem Header="整体布置" FontSize="9" FontFamily="HYQiHei 75S" IsSelected="True" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
                 <Grid Background="#FFE5E5E5">
                     <GroupBox Header="基本信息" Height="141" VerticalAlignment="Top" Margin="0,2,0,0">
                         <Grid>
@@ -86,18 +75,18 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox HorizontalAlignment="Right" Margin="0,9.898,30,0" VerticalAlignment="Top" Width="66">
+                            <ComboBox x:Name="MSteelClass" HorizontalAlignment="Right" Margin="0,9.898,30,0" VerticalAlignment="Top" Width="66">
                                 <ComboBoxItem Content="Q235"/>
                                 <ComboBoxItem Content="Q345"/>
                                 <ComboBoxItem IsSelected="True" Content="Q420"/>
                             </ComboBox>
-                            <ComboBox HorizontalAlignment="Right" Margin="0,9.898,30,0" VerticalAlignment="Top" Width="66" Grid.Column="1">
+                            <ComboBox x:Name="HSteelClass" HorizontalAlignment="Right" Margin="0,9.898,30,0" VerticalAlignment="Top" Width="66" Grid.Column="1">
                                 <ComboBoxItem Content="Q235"/>
                                 <ComboBoxItem Content="Q345"/>
                                 <ComboBoxItem IsSelected="True" Content="Q420"/>
                             </ComboBox>
                             <Label Content="桥面板" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.796" Width="109.077" Grid.Column="2"/>
-                            <ComboBox HorizontalAlignment="Right" Margin="0,9.898,30,0" VerticalAlignment="Top" Width="66" Grid.Column="2">
+                            <ComboBox x:Name="ConcClass" HorizontalAlignment="Right" Margin="0,9.898,30,0" VerticalAlignment="Top" Width="66" Grid.Column="2">
                                 <ComboBoxItem Content="C40"/>
                                 <ComboBoxItem Content="C50"/>
                                 <ComboBoxItem IsSelected="True" Content="C55"/>
@@ -107,7 +96,7 @@
                         </Grid>
                     </GroupBox>
 
-                    <Button Content="确认" Margin="0,0,29.5,45"  ClickMode="Release" HorizontalAlignment="Right" Width="75" Height="28" VerticalAlignment="Bottom"/>
+                    <Button Content="确认" Margin="0,0,29.5,45"  ClickMode="Release" HorizontalAlignment="Right" Width="75" Height="28" VerticalAlignment="Bottom" Click="Tab1_Click"/>
 
 
                 </Grid>
@@ -115,22 +104,33 @@
             <TabItem Header="断面布置" FontSize="9" FontFamily="HYQiHei 75S"  Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="425"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <DataGrid x:Name="SectionDataGird" CanUserResizeRows="False" FontSize="12" Opacity="0.985" BorderThickness="1" GridLinesVisibility="All" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
-                              ItemsSource="{Binding}" AutoGenerateColumns="False" >
+                              ItemsSource="{Binding}" AutoGenerateColumns="False" FontFamily="Microsoft YaHei UI" SelectionUnit="Cell" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding ID}" Header="序号" CanUserSort="False" IsReadOnly="True" Width="50"/>
+                            <DataGridTextColumn Binding="{Binding ID}" Header="No." CanUserSort="False" IsReadOnly="True" Width="40"/>
                             <DataGridTextColumn Binding="{Binding Name}" Header="名称" CanUserSort="False" IsReadOnly="True" Width="80"/>
                             <DataGridTextColumn Binding="{Binding H1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="H1" CanUserSort="False" IsReadOnly="False" Width="50"/>
                             <DataGridTextColumn Binding="{Binding H2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="H2" CanUserSort="False" IsReadOnly="False" Width="50"/>
                             <DataGridTextColumn Binding="{Binding H3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="H3" CanUserSort="False" IsReadOnly="False" Width="50"/>
-                            <DataGridTextColumn Binding="{Binding T1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="T1" CanUserSort="False" IsReadOnly="False"/>
-                            <DataGridTextColumn Binding="{Binding T2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="T2" CanUserSort="False" IsReadOnly="False"/>
-                            <DataGridTextColumn Binding="{Binding T1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="T3" CanUserSort="False" IsReadOnly="False"/>
+                            <DataGridTextColumn Binding="{Binding T1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="T1" CanUserSort="False" IsReadOnly="False" Width="50"/>
+                            <DataGridTextColumn Binding="{Binding T2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="T2" CanUserSort="False" IsReadOnly="False" Width="50"/>
+                            <DataGridTextColumn Binding="{Binding T1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="T3" CanUserSort="False" IsReadOnly="False" Width="50"/>
                         </DataGrid.Columns>
                     </DataGrid>
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <DataGrid x:Name="SplitDataGird" FontSize="12" BorderThickness="1" GridLinesVisibility="All" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
+                                  ItemsSource="{Binding}" AutoGenerateColumns="False" FontFamily="Microsoft YaHei UI" Height="291.74" Margin="14,6,18,4" SelectionUnit="Cell" CanUserDeleteRows="True"
+                                  CanUserAddRows="True" HeadersVisibility="Column" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding ID}" Header="No." CanUserSort="False" IsReadOnly="True" Width="3*"/>
+                                <DataGridTextColumn Binding="{Binding ID}" Header="Length" CanUserSort="False" IsReadOnly="True" Width="6*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Content="确认" Height="27.3" VerticalAlignment="Bottom"  Margin="5" Click="Tab2_Click"/>
+                    </StackPanel>
                 </Grid>
 
 
@@ -142,35 +142,44 @@
             </TabItem>
             <TabItem Header="荷载" FontSize="9" FontFamily="HYQiHei 75S" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
                 <Grid Background="#FFE5E5E5"       >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="280*"/>
-                        <ColumnDefinition Width="280*"/>
-                    </Grid.ColumnDefinitions>
                     <GroupBox Header="永久作用" Grid.ColumnSpan="3" Height="105" VerticalAlignment="Top" Margin="2,2,2,0">
                         <Grid>
-                            <Label Content="主梁调整系数：" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" FontSize="15" Width="115" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-                            <TextBox Height="26" Margin="125,2,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="154.625"/>
-                            <Label Content="护栏延米重：" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="30" Width="115" VerticalContentAlignment="Center"/>
-                            <TextBox Height="26" Margin="125,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="154.625"/>
-                            <Label Content="桥面板平米重：" Margin="290,0,-10.75,0" FontFamily="Microsoft YaHei" FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="285.75" Height="29.797" VerticalAlignment="Top"/>
-                            <TextBox Height="26" Margin="400,2,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="154.625"/>
-                            <Label Content="沥青平米重：" HorizontalAlignment="Left" Margin="290,35,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="30" Width="115" VerticalContentAlignment="Center"/>
-                            <TextBox Height="26" Margin="400,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="154.625"/>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="280*"/>
+                                <ColumnDefinition Width="280*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="主梁调整系数：" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" FontSize="12" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Height="{DynamicResource LabelH}" VerticalAlignment="Top"/>
+                            <TextBox  x:Name="MBeamFactorTB"  Height="26" Margin="140,2,0,0" TextWrapping="Wrap" Text="示例：1.25" VerticalAlignment="Top"
+                                     MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：1.25" HorizontalAlignment="Left" Width="120" />
+                            <Label Content="护栏延米重(kN/m)：" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="12" Height="{DynamicResource LabelH}" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="HuLanTB" Height="26" Margin="140,37,0,0" TextWrapping="Wrap" Text="示例：11.5" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"
+                                     MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：11.5"   />
+                            <Label Content="桥面板重(kN/m3)：" FontFamily="Microsoft YaHei" FontSize="12" VerticalContentAlignment="Center" Height="{DynamicResource LabelH}" VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Left" Width="{DynamicResource LabelW}"/>
+                            <TextBox x:Name="CPlateTB" Height="26" Margin="140,2,-10.125,0" TextWrapping="Wrap" Text="示例：27.5" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Grid.Column="1"
+                                     MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：27.5"  />
+                            <Label Content="沥青铺装厚度(mm)：" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="12" Height="{DynamicResource LabelH}" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Grid.Column="1"/>
+                            <TextBox x:Name="LiQingTB" Height="26" Margin="140,37,-10.125,0" TextWrapping="Wrap" Text="示例：150" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Grid.Column="1"
+                                     MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：150" />
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="可变作用" Height="109.5" Margin="2,111,2,0" VerticalAlignment="Top" Grid.ColumnSpan="3">
                         <Grid>
-                            <Label Content="活载调整系数：" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" FontSize="15" Width="115" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-                            <TextBox Height="26" Margin="115,4.022,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="144.125"/>
-                            <Label Content="高/低温：" HorizontalAlignment="Left" Margin="290,0,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="30" Width="115" VerticalContentAlignment="Center"/>
-                            <TextBox Height="26" Margin="400,4.022,54.375,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                            <Label Content="高/低温度梯度：" HorizontalAlignment="Left" Margin="290,30,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="30" Width="115" VerticalContentAlignment="Center"/>
-                            <TextBox Height="26" Margin="419.375,35.022,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                            <Label Content="风：" HorizontalAlignment="Left" Margin="0,35,0,0" FontFamily="Microsoft YaHei" FontSize="15" Width="115" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-                            <TextBox Height="26" Margin="72.5,35.044,305.875,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="LiveLoadTB"  Content="活载调整系数：" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" FontSize="12" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Height="{DynamicResource LabelH}" VerticalAlignment="Top" Margin="0"/>
+                            <TextBox Height="26" Margin="140,2,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
+                            <Label Content="高/低温(℃)：" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="12" Height="{DynamicResource LabelH}" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Grid.Column="1"/>
+                            <TextBox x:Name="TempTB"  Height="26" Margin="140,2,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.Column="1" Width="120" HorizontalAlignment="Left"/>
+                            <Label Content="高/低温度梯度：" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="12" Height="{DynamicResource LabelH}" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Grid.Column="1"/>
+                            <TextBox x:Name="GiadTempTB"  Height="26" Margin="140,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.Column="1" Width="120" HorizontalAlignment="Left"/>
+                            <Label Content="风：" HorizontalAlignment="Left" Margin="0,35,0,0" FontFamily="Microsoft YaHei" FontSize="12" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Height="{DynamicResource LabelH}" VerticalAlignment="Top"/>
+                            <TextBox x:Name="WindTB"  Height="26" Margin="140,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="偶然作用&amp;地震作用" Height="88.25" Margin="2,225.5,2,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <GroupBox Header="偶然作用&amp;地震作用" Height="88.25" Margin="2,225.5,100,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="484.25,225.5,0,0" VerticalAlignment="Top" Width="75"/>
                 </Grid>
             </TabItem>
             <TabItem Header="施工阶段" FontSize="9" FontFamily="HYQiHei 75S" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">

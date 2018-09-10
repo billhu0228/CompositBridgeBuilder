@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,20 +19,14 @@ namespace CompositBridgeBuilder
         public double T2 { set; get; }
         public double T3 { set; get; }
     }
-
-
-    struct IB_Section
+    class SplitTuple
     {
-        public int ID { set; get; }
-        public string Name { get; set; }
-        public double H1, H2, H3, T1, T2, T3;
-        public IB_Section(int id,string name,double h1,double h2, double h3,double t1,double t2,double t3)
-        {
-            ID = id;
-            Name = name;
-            H1 = h1; H2 = h2; H3 = h3; T1 = t1; T2 = t2; T3 = t3;
-        }
+        public int SectID { set; get; }
+        public double Length { set; get; }
     }
+
+
+
 
     enum CMethod { YiCi, ZhuKua }
     enum MDVersion { Md15, Md17 }
@@ -41,33 +36,34 @@ namespace CompositBridgeBuilder
 
     class ComBridge
     {
+        public double Width;
+        public double MBeamDist;
         // public
         List<double> SpanList { get;}
-        double Nspan { get; }
-
-        double Width { set; get; }
-        double MBeamDist { set; get; }
-        double HBeamDist { set; get; }
-        double PlateThick { get; }
-        double ExtendLength { get; }
-        string OutputMctPath { get; }
-        double CUnitWeight { get; }
-        double SUnitWeight { get; }
+        public double Nspan { get; }
         
-        Concrete CRank { set; get; } // 混凝土标号
-        Steel MBeamSRank { set; get; } // 主钢材级别
-        Steel HBeamSRank { set; get; } // 副钢材级别
-        double RH { get; }//相对湿度百分值
         
-        CMethod ConsMethod { set; get; }
-        MDVersion MidasVersion { set; get; }
+        public double HBeamDist { set; get; }
+        public double PlateThick { get; }
+        public double ExtendLength { get; }
+        public string OutputMctPath { get; }
+        public double CUnitWeight { get; }
+        public double SUnitWeight { get; }
+
+        public Concrete CRank; // 混凝土标号
+        public Steel MBeamSRank; // 主钢材级别
+        public Steel HBeamSRank;// 副钢材级别
+        public double RH { get; }//相对湿度百分值
+
+        public CMethod ConsMethod { set; get; }
+        public MDVersion MidasVersion { set; get; }
 
 
 
-        
+
         // private
-        IB_Section[] SectList=new IB_Section[6];
-        List<double[]> SectSplit;
+        public ObservableCollection<IBSection> SectList;
+        public ObservableCollection<SplitTuple> SectSplit;
 
 
         public ComBridge()
@@ -76,7 +72,10 @@ namespace CompositBridgeBuilder
 
         }
 
-
+        /// <summary>
+        /// 解析桥跨序列
+        /// </summary>
+        /// <param name="splist"></param>
         public void ReadSpanList(string splist)
         {
             string[] slist = splist.Split('+');
@@ -88,13 +87,79 @@ namespace CompositBridgeBuilder
                 }
                 catch
                 {
-                    throw;
+                    SpanList.Clear();
+                    throw new ArgumentException("桥跨序列");
                 }
                 
             }
         }
 
+        /// <summary>
+        /// 解析单一浮点数
+        /// </summary>
+        /// <param name="dataDouble"></param>
+        /// <param name="dataText"></param>
+        public static void String2Double(ref double dataDouble, string dataText)
+        {
+            try
+            {
+                dataDouble = double.Parse(dataText);
+            }
+            catch
+            {
+                dataDouble = 0;
+                throw new ArgumentException(string.Format("\"{0}\" 解析错误", dataText));
+            }
+        }
+        /// <summary>
+        /// 解析枚举
+        /// </summary>
+        /// <param name="enum"></param>
+        /// <param name="dataText"></param>
+        public static void String2Enum(ref Concrete @enum,string dataText)
+        {
+            try
+            {
+                if (dataText.StartsWith("C"))
+                {
+                    @enum = (Concrete)Enum.Parse(typeof(Concrete), dataText);
+                }
+                else
+                {
+                    throw new ArgumentException(string.Format("\"{0}\" 解析错误", dataText));
+                }
+            }
+            catch
+            {
+                throw new ArgumentException(string.Format("\"{0}\" 解析错误", dataText));
+            }
+        }
+        public static void String2Enum(ref Steel @enum, string dataText)
+        {
+            try
+            {
+               if (dataText.StartsWith("Q"))
+                {
+                    @enum = (Steel)Enum.Parse(typeof(Steel), dataText);
+                }
+                else
+                {
+                    throw new ArgumentException(string.Format("\"{0}\" 解析错误", dataText));
+                }
+            }
+            catch
+            {
+                throw new ArgumentException(string.Format("\"{0}\" 解析错误", dataText));
+            }
+        }
 
+
+
+
+
+        /// <summary>
+        /// 输出MCT开头
+        /// </summary>
         void WriteBegin()
         {
             Dictionary<Concrete, double> ConcE = new Dictionary<Concrete, double>();
