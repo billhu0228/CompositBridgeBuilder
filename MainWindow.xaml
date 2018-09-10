@@ -15,11 +15,11 @@
 
 
 
-
-
     <Controls:MetroWindow.Resources>
 
+
         <ResourceDictionary>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -36,8 +36,8 @@
                 <GradientStop Color="#FF3CACDC" Offset="0"/>
                 <GradientStop Color="White" Offset="1"/>
             </LinearGradientBrush>
-
         </ResourceDictionary>
+
 
     </Controls:MetroWindow.Resources>
 
@@ -63,38 +63,72 @@
     </Controls:MetroWindow.RightWindowCommands>
 
     <Grid>
-        <TabControl  Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabItems" Margin="10,0,10,10" >
-            <TabItem Header="整体布置" FontSize="9" FontFamily="HYQiHei 75S" IsSelected="True" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
+        <TabControl  Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabItems" >
+            <TabItem Header="整体布置" FontSize="9" FontFamily="HYQiHei 75S" IsSelected="True" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}" d:IsLocked="True">
                 <Grid Background="#FFE5E5E5">
-                    <Label Content="跨       径(m)：" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15"/>
-                    <Label Content="桥       宽(m)：" HorizontalAlignment="Left" Margin="10,44.92,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15"/>
-                    <Label Content="主梁间距(m)：" HorizontalAlignment="Left" Margin="10,79.716,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15"/>
-
-                    <TextBox Name="SplistTB" Height="23" Margin="120,14,32,0" TextWrapping="Wrap" Text="示例：40+40+40" VerticalAlignment="Top" 
+                    <GroupBox Header="基本信息" Height="141" VerticalAlignment="Top" Margin="0,2,0,0">
+                        <Grid>
+                            <Label Content="桥       宽(m)：" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.797" Width="110.157"/>
+                            <Label Content="主梁间距(m)：" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.796" Width="109.077" RenderTransformOrigin="0.492,0.513"/>
+                            <Label Content="桥跨布置(m)：" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.797" Width="110.157"/>
+                            <TextBox x:Name="SplistTB" Height="26" Margin="131.75,9.898,10,0" TextWrapping="Wrap" Text="示例：40+40+40" VerticalAlignment="Top" 
                            MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：40+40+40"       />
-                    <TextBox Name="WidhtTB" Height="23" Margin="120,49,32,0" TextWrapping="Wrap" Text="示例：27.5" VerticalAlignment="Top" 
+                            <TextBox x:Name="WidhtTB" Height="26.001" Margin="131.75,39.898,10,0" TextWrapping="Wrap" Text="示例：27.5" VerticalAlignment="Top" 
                            MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：27.5"       />
-                    <TextBox Name="MBeamDistTB" Height="23" Margin="120,84,32,0" TextWrapping="Wrap" Text="示例：4.7" VerticalAlignment="Top" 
+                            <TextBox x:Name="MBeamDistTB" Height="26" Margin="131.75,69.898,10,0" TextWrapping="Wrap" Text="示例：4.7" VerticalAlignment="Top" 
                            MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：4.7"       />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="材料参数" Height="78.333" VerticalAlignment="Top" Margin="0,148,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox HorizontalAlignment="Right" Margin="0,9.898,30,0" VerticalAlignment="Top" Width="66">
+                                <ComboBoxItem Content="Q235"/>
+                                <ComboBoxItem Content="Q345"/>
+                                <ComboBoxItem IsSelected="True" Content="Q420"/>
+                            </ComboBox>
+                            <ComboBox HorizontalAlignment="Right" Margin="0,9.898,30,0" VerticalAlignment="Top" Width="66" Grid.Column="1">
+                                <ComboBoxItem Content="Q235"/>
+                                <ComboBoxItem Content="Q345"/>
+                                <ComboBoxItem IsSelected="True" Content="Q420"/>
+                            </ComboBox>
+                            <Label Content="桥面板" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.796" Width="109.077" Grid.Column="2"/>
+                            <ComboBox HorizontalAlignment="Right" Margin="0,9.898,30,0" VerticalAlignment="Top" Width="66" Grid.Column="2">
+                                <ComboBoxItem Content="C40"/>
+                                <ComboBoxItem Content="C50"/>
+                                <ComboBoxItem IsSelected="True" Content="C55"/>
+                            </ComboBox>
+                            <Label Content="次要钢材：" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.796" Width="109.077" Grid.Column="1"/>
+                            <Label Content="主要钢材：" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.796" Width="109.077" Margin="10,8,0,0"/>
+                        </Grid>
+                    </GroupBox>
 
-                    <Button Content="确认" Margin="0,0,32,31"  ClickMode="Release" HorizontalAlignment="Right" Width="75" Height="28" VerticalAlignment="Bottom"/>
+                    <Button Content="确认" Margin="0,0,29.5,45"  ClickMode="Release" HorizontalAlignment="Right" Width="75" Height="28" VerticalAlignment="Bottom"/>
 
 
                 </Grid>
             </TabItem>
             <TabItem Header="断面布置" FontSize="9" FontFamily="HYQiHei 75S"  Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="SectionDataGird" Margin="10,10,0,10" HorizontalAlignment="Left" Width="328" CanUserResizeRows="False" FontSize="12" Opacity="0.985" BorderThickness="1" GridLinesVisibility="All" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
-                              ItemsSource="{Binding}" AutoGenerateColumns="False">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="SectionDataGird" CanUserResizeRows="False" FontSize="12" Opacity="0.985" BorderThickness="1" GridLinesVisibility="All" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
+                              ItemsSource="{Binding}" AutoGenerateColumns="False" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding ID}" Header="序号" CanUserSort="False" IsReadOnly="True"/>
-                            <DataGridTextColumn Binding="{Binding Name}" Header="名称" CanUserSort="False" IsReadOnly="True"/>
-                            <DataGridTextColumn Binding="{Binding Path=H1, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="H1" CanUserSort="False" IsReadOnly="False"/>
-                            <DataGridTextColumn Binding="{Binding Path=H2, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="H2" CanUserSort="False" IsReadOnly="False"/>
-                            <DataGridTextColumn Binding="{Binding Path=H3, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="H3" CanUserSort="False" IsReadOnly="False"/>
-                            <DataGridTextColumn Binding="{Binding Path=T1, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="T1" CanUserSort="False" IsReadOnly="False"/>
-                            <DataGridTextColumn Binding="{Binding Path=T2, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="T2" CanUserSort="False" IsReadOnly="False"/>
-                            <DataGridTextColumn Binding="{Binding Path=T1, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Header="T3" CanUserSort="False" IsReadOnly="False"/>
+                            <DataGridTextColumn Binding="{Binding ID}" Header="序号" CanUserSort="False" IsReadOnly="True" Width="50"/>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="名称" CanUserSort="False" IsReadOnly="True" Width="80"/>
+                            <DataGridTextColumn Binding="{Binding H1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="H1" CanUserSort="False" IsReadOnly="False" Width="50"/>
+                            <DataGridTextColumn Binding="{Binding H2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="H2" CanUserSort="False" IsReadOnly="False" Width="50"/>
+                            <DataGridTextColumn Binding="{Binding H3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="H3" CanUserSort="False" IsReadOnly="False" Width="50"/>
+                            <DataGridTextColumn Binding="{Binding T1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="T1" CanUserSort="False" IsReadOnly="False"/>
+                            <DataGridTextColumn Binding="{Binding T2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="T2" CanUserSort="False" IsReadOnly="False"/>
+                            <DataGridTextColumn Binding="{Binding T1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="T3" CanUserSort="False" IsReadOnly="False"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -108,14 +142,35 @@
             </TabItem>
             <TabItem Header="荷载" FontSize="9" FontFamily="HYQiHei 75S" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
                 <Grid Background="#FFE5E5E5"       >
-                    <StackPanel>
-                        <GroupBox Header="恒载" Height="100" Background="{DynamicResource BrushLoad}" />
-                        <GroupBox Header="活载" Height="100" Background="{DynamicResource BrushLoad}"/>
-                    </StackPanel>
-
-
-
-
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280*"/>
+                        <ColumnDefinition Width="280*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="永久作用" Grid.ColumnSpan="3" Height="105" VerticalAlignment="Top" Margin="2,2,2,0">
+                        <Grid>
+                            <Label Content="主梁调整系数：" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" FontSize="15" Width="115" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
+                            <TextBox Height="26" Margin="125,2,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="154.625"/>
+                            <Label Content="护栏延米重：" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="30" Width="115" VerticalContentAlignment="Center"/>
+                            <TextBox Height="26" Margin="125,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="154.625"/>
+                            <Label Content="桥面板平米重：" Margin="290,0,-10.75,0" FontFamily="Microsoft YaHei" FontSize="15" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="285.75" Height="29.797" VerticalAlignment="Top"/>
+                            <TextBox Height="26" Margin="400,2,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="154.625"/>
+                            <Label Content="沥青平米重：" HorizontalAlignment="Left" Margin="290,35,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="30" Width="115" VerticalContentAlignment="Center"/>
+                            <TextBox Height="26" Margin="400,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="154.625"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="可变作用" Height="109.5" Margin="2,111,2,0" VerticalAlignment="Top" Grid.ColumnSpan="3">
+                        <Grid>
+                            <Label Content="活载调整系数：" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" FontSize="15" Width="115" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
+                            <TextBox Height="26" Margin="115,4.022,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="144.125"/>
+                            <Label Content="高/低温：" HorizontalAlignment="Left" Margin="290,0,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="30" Width="115" VerticalContentAlignment="Center"/>
+                            <TextBox Height="26" Margin="400,4.022,54.375,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                            <Label Content="高/低温度梯度：" HorizontalAlignment="Left" Margin="290,30,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="30" Width="115" VerticalContentAlignment="Center"/>
+                            <TextBox Height="26" Margin="419.375,35.022,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                            <Label Content="风：" HorizontalAlignment="Left" Margin="0,35,0,0" FontFamily="Microsoft YaHei" FontSize="15" Width="115" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
+                            <TextBox Height="26" Margin="72.5,35.044,305.875,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="偶然作用&amp;地震作用" Height="88.25" Margin="2,225.5,2,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                 </Grid>
             </TabItem>
             <TabItem Header="施工阶段" FontSize="9" FontFamily="HYQiHei 75S" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">

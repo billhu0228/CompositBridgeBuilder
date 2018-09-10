@@ -37,6 +37,8 @@ namespace CompositBridgeBuilder
     enum MDVersion { Md15, Md17 }
     enum Concrete { C50,C55}
     enum Steel { Q345, Q420 }
+
+
     class ComBridge
     {
         // public
@@ -55,7 +57,7 @@ namespace CompositBridgeBuilder
         Concrete CRank { set; get; } // 混凝土标号
         Steel MBeamSRank { set; get; } // 主钢材级别
         Steel HBeamSRank { set; get; } // 副钢材级别
-        double RH { get; }//相对湿度百分值：80
+        double RH { get; }//相对湿度百分值
         
         CMethod ConsMethod { set; get; }
         MDVersion MidasVersion { set; get; }
