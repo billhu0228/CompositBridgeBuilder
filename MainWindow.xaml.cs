@@ -73,6 +73,12 @@ namespace CompositBridgeBuilder
             ps1 = new IBSection { ID = 10, Name = "中纵梁" };
             SectionList.Add(ps1);
             SectionDataGird.ItemsSource = SectionList;
+
+            SplitTuple st1;
+            st1 = new SplitTuple { SectID = 1, Length = curBridge.Length/1000 };
+            SplitList.Add(st1);
+            SplitDataGird.ItemsSource = SplitList;
+
         }
  
         
@@ -119,7 +125,30 @@ namespace CompositBridgeBuilder
         private void Tab2_Click(object sender, RoutedEventArgs e)
         {
             curBridge.SectList = SectionList;
+            
+            if (SplitList.Sum(t => t.Length) != curBridge.Length/1000)
+            {
+                MessageBox.Show(string.Format("截面布置与总长不符 : 请检查."), "ERROR");
+            }
+            else
+            {
+                curBridge.SectSplit = SplitList;
+            }
         }
+
+
+        private void SplitDataGird_InitializingNewItem(object sender,InitializingNewItemEventArgs e)
+        {
+            ((SplitTuple)e.NewItem).SectID = 1;
+            ((SplitTuple)e.NewItem).Length = curBridge.Length/1000.0 - SplitList.Sum(t => t.Length);            
+        }
+   
+
+
+
+
+
+
         // 荷载
         private void Tab3_Click(object sender, RoutedEventArgs e)
         {
@@ -135,6 +164,12 @@ namespace CompositBridgeBuilder
         {
 
         }
+
+
+
+
+
+
 
 
 

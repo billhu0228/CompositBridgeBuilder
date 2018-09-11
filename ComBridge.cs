@@ -41,7 +41,13 @@ namespace CompositBridgeBuilder
         // public
         List<double> SpanList { get;}
         public double Nspan { get; }
-        
+        public double Length
+        {
+            get
+            {
+                return SpanList.Sum();
+            }
+        }
         
         public double HBeamDist { set; get; }
         public double PlateThick { get; }
@@ -92,6 +98,7 @@ namespace CompositBridgeBuilder
                 }
                 
             }
+            
         }
 
         /// <summary>
