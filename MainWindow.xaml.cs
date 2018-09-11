@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace CompositBridgeBuilder
 {
@@ -39,10 +40,17 @@ namespace CompositBridgeBuilder
             WidhtTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             SplistTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             MBeamDistTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
+            HBeamDistTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             MBeamFactorTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             HuLanTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             CPlateTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
-            LiQingTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);            
+            LiQingTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
+            LiveLoadTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
+            TempTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
+            DeltTemp.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
+            WindTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
+            ThickTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
+
 
             InitSectData();
         }
@@ -109,11 +117,13 @@ namespace CompositBridgeBuilder
             try
             {
                 curBridge.ReadSpanList(SplistTB.Text);                
-                ComBridge.String2Double(ref curBridge.Width, WidhtTB.Text);
-                ComBridge.String2Double(ref curBridge.MBeamDist, MBeamDistTB.Text);
+                ComBridge.String2Double(ref curBridge.Width, WidhtTB.Text,1000.0);
+                ComBridge.String2Double(ref curBridge.MBeamDist, MBeamDistTB.Text,1000.0);
+                ComBridge.String2Double(ref curBridge.HBeamDist, HBeamDistTB.Text,1000.0);
                 ComBridge.String2Enum(ref curBridge.CRank, ConcClass.Text);
                 ComBridge.String2Enum(ref curBridge.MBeamSRank, MSteelClass.Text);
-                ComBridge.String2Enum(ref curBridge.HBeamSRank, HSteelClass.Text);                
+                ComBridge.String2Enum(ref curBridge.HBeamSRank, HSteelClass.Text);
+                MessageBox.Show("整体布置 输入成功.", "OK");
             }
             catch(Exception err)
             {
@@ -129,13 +139,24 @@ namespace CompositBridgeBuilder
             if (SplitList.Sum(t => t.Length) != curBridge.Length/1000)
             {
                 MessageBox.Show(string.Format("截面布置与总长不符 : 请检查."), "ERROR");
+                return;
             }
             else
             {
                 curBridge.SectSplit = SplitList;
             }
-        }
 
+            try
+            {
+                ComBridge.String2Double(ref curBridge.PlateThick, ThickTB.Text,1000.0);
+                MessageBox.Show("断面布置 输入成功.","OK");
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(string.Format("{0} : 输入参数错误，请参考示例.", err.Message), "ERROR");
+            }
+
+        }
 
         private void SplitDataGird_InitializingNewItem(object sender,InitializingNewItemEventArgs e)
         {
@@ -152,6 +173,24 @@ namespace CompositBridgeBuilder
         // 荷载
         private void Tab3_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                ComBridge.String2Double(ref curBridge.MainBeamFactor, MBeamFactorTB.Text);
+                ComBridge.String2Double(ref curBridge.LiveLoadFactor, LiveLoadTB.Text);
+                ComBridge.String2Double(ref curBridge.PlateUnitWeight, LiveLoadTB.Text,1.0/9.8);
+                ComBridge.String2Double(ref curBridge.AsphaltThick, LiQingTB.Text);
+                ComBridge.String2Double(ref curBridge.CurbLengthWeight, HuLanTB.Text);
+                ComBridge.String2Double(ref curBridge.WindPressure, WindTB.Text, 1 / 1000.0);
+                ComBridge.String2Temp(ref curBridge.HeighTemp, ref curBridge.LowTemp, TempTB.Text);
+                ComBridge.String2Temp(ref curBridge.DeltHeighTemp, ref curBridge.DeltLowTemp, DeltTemp.Text);
+
+                MessageBox.Show("荷载输入成功.", "OK");
+                this.show
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(string.Format("{0} : 输入参数错误，请参考示例.", err.Message), "ERROR");
+            }
 
         }
         // 施工阶段
@@ -174,8 +213,19 @@ namespace CompositBridgeBuilder
 
 
 
+
         // SaveAs
+        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+
+            curBridge.SaveAs()
+
+        }
         // Open
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
 
 

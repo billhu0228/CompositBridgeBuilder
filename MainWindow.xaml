@@ -46,8 +46,8 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="Open" />
-            <Button Content="SaveAs" />
+            <Button Content="Open" Click="Open_Click" />
+            <Button Content="SaveAs" Click="SaveAs_Click"/>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
@@ -55,20 +55,33 @@
         <TabControl  Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabItems">
             <TabItem Header="整体布置" FontSize="9" FontFamily="HYQiHei 75S" IsSelected="True" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
                 <Grid Background="#FFE5E5E5">
-                    <GroupBox Header="基本信息" Height="141" VerticalAlignment="Top" Margin="0,2,0,0">
+                    <GroupBox Header="基本信息" Height="172" VerticalAlignment="Top" Margin="0,2,0,0">
                         <Grid>
-                            <Label Content="桥       宽(m)：" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.797" Width="110.157"/>
-                            <Label Content="主梁间距(m)：" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.796" Width="109.077" RenderTransformOrigin="0.492,0.513"/>
-                            <Label Content="桥跨布置(m)：" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="15" Height="29.797" Width="110.157"/>
-                            <TextBox x:Name="SplistTB" Height="26" Margin="131.75,9.898,10,0" TextWrapping="Wrap" Text="示例：40+40+40" VerticalAlignment="Top" 
-                           MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：40+40+40"       />
-                            <TextBox x:Name="WidhtTB" Height="26.001" Margin="131.75,39.898,10,0" TextWrapping="Wrap" Text="示例：27.5" VerticalAlignment="Top" 
-                           MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：27.5"       />
-                            <TextBox x:Name="MBeamDistTB" Height="26" Margin="131.75,69.898,10,0" TextWrapping="Wrap" Text="示例：4.7" VerticalAlignment="Top" 
-                           MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：4.7"       />
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="桥       宽(m)：" FontFamily="Microsoft YaHei" FontSize="15" Grid.Row="1" VerticalContentAlignment="Center"/>
+                            <Label Content="主梁间距(m)：" FontFamily="Microsoft YaHei" FontSize="15" RenderTransformOrigin="0.492,0.513" Grid.Row="2" VerticalContentAlignment="Center"/>
+                            <Label Content="桥跨布置(m)：" FontFamily="Microsoft YaHei" FontSize="15" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="SplistTB" Height="26" Margin="0,3.667,5,0" TextWrapping="Wrap" Text="示例：40+40+40" VerticalAlignment="Center" 
+                           MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：40+40+40" Grid.Column="1"       />
+                            <TextBox x:Name="WidhtTB" Height="26.001" Margin="0,0.042,5,0" TextWrapping="Wrap" Text="示例：27.5" VerticalAlignment="Center" 
+                           MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：27.5" Grid.Column="1" Grid.Row="1"       />
+                            <TextBox x:Name="MBeamDistTB" Height="26" Margin="0,2.254,5,0" TextWrapping="Wrap" Text="示例：4.7" VerticalAlignment="Center" 
+                           MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：4.7" Grid.Column="1" Grid.Row="2"       />
+                            <Label Content="横梁间距(m)：" FontFamily="Microsoft YaHei" FontSize="15" RenderTransformOrigin="0.492,0.513" Grid.Row="3" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="HBeamDistTB" Margin="0,4.084,5,4.541" TextWrapping="Wrap" Text="示例：5.0" 
+                                MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：5.0" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"       />
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="材料参数" Height="78.333" VerticalAlignment="Top" Margin="0,148,0,0">
+                    <GroupBox Header="材料参数" Height="78.333" VerticalAlignment="Top" Margin="0,179,0,0">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -122,13 +135,16 @@
                     </DataGrid>
                     <StackPanel Grid.Column="1" Orientation="Vertical">
                         <DataGrid x:Name="SplitDataGird" FontSize="12" BorderThickness="1" GridLinesVisibility="All" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
-                                  ItemsSource="{Binding}" AutoGenerateColumns="False" FontFamily="Microsoft YaHei UI" Height="291.74" Margin="5,0,2,4" SelectionUnit="Cell" CanUserDeleteRows="True"
+                                  ItemsSource="{Binding}" AutoGenerateColumns="False" FontFamily="Microsoft YaHei UI" Height="242.24" Margin="5,0,2,4" SelectionUnit="Cell" CanUserDeleteRows="True"
                                   CanUserAddRows="True" HeadersVisibility="Column" InitializingNewItem="SplitDataGird_InitializingNewItem">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding SectID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="No." CanUserSort="False"  Width="3*"/>
                                 <DataGridTextColumn Binding="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Header="Length" CanUserSort="False" Width="6*"/>
                             </DataGrid.Columns>
                         </DataGrid>
+                        <Label Content="桥面板厚(m)：" VerticalContentAlignment="Center" FontSize="12" Height="23.12" Margin="5,0,2,0"/>
+                        <TextBox x:Name="ThickTB" TextWrapping="Wrap" Text="示例：0.25" VerticalAlignment="Center"
+                                     MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：0.25"    Margin="5,0,2,0"    />
                         <Button Content="确认" Height="27.3" VerticalAlignment="Bottom"  Margin="5,5,3,5" Click="Tab2_Click"/>
                     </StackPanel>
                 </Grid>
@@ -169,21 +185,20 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <Label  Content="活载调整系数：" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" FontSize="12" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Height="{DynamicResource LabelH}" VerticalAlignment="Top" Margin="0"/>
-                            <TextBox x:Name="LiveLoadTB"  Height="26" Margin="140,2,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"
+                            <TextBox x:Name="LiveLoadTB"  Height="26" Margin="140,2,0,0" TextWrapping="Wrap" Text="示例：1.0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"
                                      MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：1.0"/>
                             <Label Content="高/低温(℃)：" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="12" Height="{DynamicResource LabelH}" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Grid.Column="1"/>
-                            <TextBox  x:Name="TempTB" Height="26" Margin="140,2,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.Column="1" Width="120" HorizontalAlignment="Left"
+                            <TextBox  x:Name="TempTB" Height="26" Margin="140,2,0,0" TextWrapping="Wrap" Text="示例：-40/40" VerticalAlignment="Top" Grid.Column="1" Width="120" HorizontalAlignment="Left"
                                       MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：-40/40"/>
                             <Label Content="高/低温度梯度(℃)：" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" FontFamily="Microsoft YaHei" FontSize="12" Height="{DynamicResource LabelH}" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Grid.Column="1"/>
-                            <TextBox x:Name="GiadTempTB"  Height="26" Margin="140,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.Column="1" Width="120" HorizontalAlignment="Left"
+                            <TextBox x:Name="DeltTemp"  Height="26" Margin="140,37,0,0" TextWrapping="Wrap" Text="示例：-7/7" VerticalAlignment="Top" Grid.Column="1" Width="120" HorizontalAlignment="Left"
                                      MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：-7/7"/>
                             <Label Content="风压(kN/m2)：" HorizontalAlignment="Left" Margin="0,35,0,0" FontFamily="Microsoft YaHei" FontSize="12" Width="{DynamicResource LabelW}" VerticalContentAlignment="Center" Height="{DynamicResource LabelH}" VerticalAlignment="Top"/>
-                            <TextBox x:Name="WindTB"  Height="26" Margin="140,37,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left"
+                            <TextBox x:Name="WindTB"  Height="26" Margin="140,37,0,0" TextWrapping="Wrap" Text="示例：1.5" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left"
                                      MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：1.5"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="偶然作用&amp;地震作用" Height="88.25" Margin="2,225.5,100,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="484.25,225.5,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button Content="确认" Margin="0,0,10,10" Click="Tab3_Click" HorizontalAlignment="Right" Width="85" Height="28" VerticalAlignment="Bottom"/>
                 </Grid>
             </TabItem>
             <TabItem Header="施工阶段" FontSize="9" FontFamily="HYQiHei 75S" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
