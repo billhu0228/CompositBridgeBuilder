@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,23 @@ namespace CompositBridgeBuilder
         ComBridge curBridge = new ComBridge();
         ObservableCollection<IBSection> SectionList = new ObservableCollection<IBSection>();
         ObservableCollection<SplitTuple> SplitList = new ObservableCollection<SplitTuple>();
+
+        Microsoft.Win32.OpenFileDialog op = new Microsoft.Win32.OpenFileDialog()
+        {
+            InitialDirectory = Environment.CurrentDirectory,
+            RestoreDirectory = true,
+            Filter = "组合梁模型文件(*.cbh)|*.cbh|所有文件(*.*)|*.*",
+        };
+        Microsoft.Win32.SaveFileDialog sf = new Microsoft.Win32.SaveFileDialog()
+        {
+            InitialDirectory= Environment.CurrentDirectory,
+            RestoreDirectory = true,
+            Filter = "组合梁模型文件(*.cbh)|*.cbh",
+            DefaultExt="cbh",
+        };
+       
         
+
         
         public MainWindow()
         {
@@ -60,30 +77,30 @@ namespace CompositBridgeBuilder
         void InitSectData()
         {
             IBSection ps1;
-            ps1 = new IBSection { ID = 1, Name = "标准主梁" };
+            ps1 = new IBSection { ID = 1, Name = "标准主梁", H1 = 700, H2 = 600, H3 = 1800, T1 = 32, T2 = 24, T3 = 18 };
             SectionList.Add(ps1);
-            ps1 = new IBSection { ID = 2, Name = "边跨主梁" };
+            ps1 = new IBSection { ID = 2, Name = "边跨主梁", H1 = 700, H2 = 600, H3 = 1800, T1 = 50, T2 = 32, T3 = 18 };
             SectionList.Add(ps1);
-            ps1 = new IBSection { ID = 3, Name = "边跨主梁" };
+            ps1 = new IBSection { ID = 3, Name = "边跨主梁", H1 = 700, H2 = 600, H3 = 1800, T1 = 50, T2 = 32, T3 = 18 };
             SectionList.Add(ps1);
-            ps1 = new IBSection { ID = 4, Name = "边支座主梁" };
+            ps1 = new IBSection { ID = 4, Name = "边支座主梁", H1 = 700, H2 = 600, H3 = 1800, T1 = 62, T2 = 36, T3 = 18 };
             SectionList.Add(ps1);
-            ps1 = new IBSection { ID = 5, Name = "小纵梁" };
+            ps1 = new IBSection { ID = 5, Name = "小纵梁", H1 = 300, H2 = 300, H3 = 300, T1 = 15, T2 = 15, T3 = 10 };
             SectionList.Add(ps1);
-            ps1 = new IBSection { ID = 6, Name = "普通横梁" };
+            ps1 = new IBSection { ID = 6, Name = "普通横梁", H1 = 300, H2 = 300, H3 = 700, T1 = 24, T2 = 24, T3 = 13 };
             SectionList.Add(ps1);
-            ps1 = new IBSection { ID = 7, Name = "跨中横梁" };
+            ps1 = new IBSection { ID = 7, Name = "跨中横梁", H1 = 400, H2 = 400, H3 = 1100, T1 = 24, T2 = 24, T3 = 14 };
             SectionList.Add(ps1);
-            ps1 = new IBSection { ID = 8, Name = "中支座横梁" };
+            ps1 = new IBSection { ID = 8, Name = "中支座横梁", H1 = 400, H2 = 400, H3 = 1100, T1 = 24, T2 = 24, T3 = 16 };
             SectionList.Add(ps1);
-            ps1 = new IBSection { ID = 9, Name = "边支座横梁" };
+            ps1 = new IBSection { ID = 9, Name = "边支座横梁", H1 = 400, H2 = 1060, H3 = 1500, T1 = 24, T2 = 28, T3 = 16 };
             SectionList.Add(ps1);
-            ps1 = new IBSection { ID = 10, Name = "中纵梁" };
+            ps1 = new IBSection { ID = 10, Name = "中纵梁", H1 = 300, H2 = 500, H3 = 300, T1 = 16, T2 = 20, T3 =10 };
             SectionList.Add(ps1);
             SectionDataGird.ItemsSource = SectionList;
 
             SplitTuple st1;
-            st1 = new SplitTuple { SectID = 1, Length = curBridge.Length/1000 };
+            st1 = new SplitTuple { SectID = 1, Length = 160 };
             SplitList.Add(st1);
             SplitDataGird.ItemsSource = SplitList;
 
@@ -116,14 +133,19 @@ namespace CompositBridgeBuilder
         {
             try
             {
-                curBridge.ReadSpanList(SplistTB.Text);                
+                curBridge.ReadSpanList(SplistTB.Text);
+                RemoveExample(ref SplistTB);
                 ComBridge.String2Double(ref curBridge.Width, WidhtTB.Text,1000.0);
+                RemoveExample(ref WidhtTB);
                 ComBridge.String2Double(ref curBridge.MBeamDist, MBeamDistTB.Text,1000.0);
+                RemoveExample(ref MBeamDistTB);
                 ComBridge.String2Double(ref curBridge.HBeamDist, HBeamDistTB.Text,1000.0);
+                RemoveExample(ref HBeamDistTB);
+
                 ComBridge.String2Enum(ref curBridge.CRank, ConcClass.Text);
                 ComBridge.String2Enum(ref curBridge.MBeamSRank, MSteelClass.Text);
                 ComBridge.String2Enum(ref curBridge.HBeamSRank, HSteelClass.Text);
-                MessageBox.Show("整体布置 输入成功.", "OK");
+                this.ShowMessageAsync("整体布置 输入成功.", "");
             }
             catch(Exception err)
             {
@@ -149,7 +171,7 @@ namespace CompositBridgeBuilder
             try
             {
                 ComBridge.String2Double(ref curBridge.PlateThick, ThickTB.Text,1000.0);
-                MessageBox.Show("断面布置 输入成功.","OK");
+                this.ShowMessageAsync("断面布置 输入成功.","");
             }
             catch (Exception err)
             {
@@ -177,15 +199,26 @@ namespace CompositBridgeBuilder
             {
                 ComBridge.String2Double(ref curBridge.MainBeamFactor, MBeamFactorTB.Text);
                 ComBridge.String2Double(ref curBridge.LiveLoadFactor, LiveLoadTB.Text);
-                ComBridge.String2Double(ref curBridge.PlateUnitWeight, LiveLoadTB.Text,1.0/9.8);
+                ComBridge.String2Double(ref curBridge.PlateUnitWeight, CPlateTB.Text,1.0/9.8);
                 ComBridge.String2Double(ref curBridge.AsphaltThick, LiQingTB.Text);
                 ComBridge.String2Double(ref curBridge.CurbLengthWeight, HuLanTB.Text);
                 ComBridge.String2Double(ref curBridge.WindPressure, WindTB.Text, 1 / 1000.0);
                 ComBridge.String2Temp(ref curBridge.HeighTemp, ref curBridge.LowTemp, TempTB.Text);
                 ComBridge.String2Temp(ref curBridge.DeltHeighTemp, ref curBridge.DeltLowTemp, DeltTemp.Text);
 
-                MessageBox.Show("荷载输入成功.", "OK");
-                this.show
+                RemoveExample(ref MBeamFactorTB);
+                RemoveExample(ref CPlateTB);                
+                RemoveExample(ref LiveLoadTB);
+                RemoveExample(ref LiveLoadTB);
+                RemoveExample(ref LiQingTB);
+                RemoveExample(ref HuLanTB);
+                RemoveExample(ref WindTB);
+
+
+
+
+                this.ShowMessageAsync("荷载输入成功.", "");
+                
             }
             catch (Exception err)
             {
@@ -218,16 +251,80 @@ namespace CompositBridgeBuilder
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
 
-            curBridge.SaveAs()
+            if (sf.ShowDialog() == true)
+            {
+                curBridge.SaveAs(sf.FileName);
+                this.ShowMessageAsync("保存成功!","");
+            }
 
         }
         // Open
         private void Open_Click(object sender, RoutedEventArgs e)
         {
+            List<string> cont;
+            string[] tmp;
+            if (op.ShowDialog() == true)
+            {                
+                using (FileStream fs = new FileStream(op.FileName, FileMode.Open, FileAccess.Read))
+                {
+                    using (StreamReader sr = new StreamReader(fs))
+                    {
+                        sr.BaseStream.Seek(0, SeekOrigin.Begin);
+                        tmp = sr.ReadToEnd().Split( '\n' );
+                    }
+                }
+                cont= tmp.Select(t=>t.TrimEnd('\r')).ToList();
+                for (int ii = 0; ii < cont.Count; ii++)
+                {
+                    string line = cont[ii];
+                    if (line.StartsWith("#"))
+                    {
+                        switch (line)
+                        {
+                            case "#Layout":
+                                {
+                                    SplistTB.Text = cont[ii + 1];
+                                    WidhtTB.Text = cont[ii + 2];
+                                    MBeamDistTB.Text = cont[ii + 3];
+                                    HBeamDistTB.Text = cont[ii + 4];
+                                    MSteelClass.Text = cont[ii + 5];
+                                    HSteelClass.Text = cont[ii + 6];
+                                    ConcClass.Text = cont[ii + 7];
+                                    break;
+                                }
+                            case "#CrossSection":
+                                {
+                                    break;
+                                }
+                            case "#Splitlist":
+                                {
+                                    break;
+                                }
+                            case "#Thickness":
+                                {
+                                    break;
+                                }
+                            case "#Loads":
+                                {
+                                    break;
+                                }
+                            default:
+                                break;
+                        }
+                    }
+                }
 
+            }
         }
 
 
+        private void RemoveExample(ref TextBox tb)
+        {
+            if (tb.Text.StartsWith("示例："))
+            {
+                tb.Text = string.Concat(tb.Text.Skip(3));
+            }
+        }
 
 
 

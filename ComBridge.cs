@@ -70,7 +70,8 @@ namespace CompositBridgeBuilder
         public ComBridge()
         {
             SpanList = new List<double>();
-
+            SectList = new ObservableCollection<IBSection>();
+            SectSplit = new ObservableCollection<SplitTuple>();
         }
 
         /// <summary>
@@ -222,36 +223,52 @@ namespace CompositBridgeBuilder
         }   
         
 
+
+
+
+
+
+
         /// <summary>
-        /// 输出CBH文件
+        /// 保存输出CBH文件
         /// </summary>
         /// <param name="filename"></param>
         public void SaveAs(string filename)
         {
-            string cwd = Environment.CurrentDirectory;
+            //string cwd = Environment.CurrentDirectory;
 
-            using (FileStream fs = new FileStream(Path.Combine(cwd, filename, ".cbh"), FileMode.Create))
+            if (!filename.EndsWith(".cbh"))
+            {
+                filename += ".cbh";
+            }
+            using (FileStream fs = new FileStream(Path.Combine(filename), FileMode.Create))
             {
                 using (StreamWriter sw = new StreamWriter(fs))
                 {
                     sw.BaseStream.Seek(0, SeekOrigin.End);
                     sw.WriteLine("#Layout");
-                    sw.WriteLine(string.Join("+",SpanList));
-                    sw.WriteLine(Width);
-                    sw.WriteLine(MBeamDist);
-                    sw.WriteLine(HBeamDist);
+                    sw.WriteLine(string.Join("+",SpanList.Select(t=>t/1000.0)));
+                    sw.WriteLine(Width/1000.0);
+                    sw.WriteLine(MBeamDist/1000.0);
+                    sw.WriteLine(HBeamDist/1000.0);
                     sw.WriteLine(MBeamSRank);
                     sw.WriteLine(HBeamSRank);
                     sw.WriteLine(CRank);
                     sw.WriteLine("#CrossSection");
-                    foreach(IBSection s in SectList)
+                    if (SectList.Count != 0)
                     {
-                        sw.WriteLine(s.GetString());
+                        foreach (IBSection s in SectList)
+                        {
+                            sw.WriteLine(s.GetString());
+                        }
                     }
                     sw.WriteLine("#Splitlist");
-                    foreach (SplitTuple st in SectSplit)
+                    if (SectSplit.Count != 0)
                     {
-                        sw.WriteLine(string.Concat(st.SectID, ",", st.Length));
+                        foreach (SplitTuple st in SectSplit)
+                        {
+                            sw.WriteLine(string.Concat(st.SectID, ",", st.Length));
+                        }
                     }
                     sw.WriteLine("#Thickness");
                     sw.WriteLine(PlateThick);
