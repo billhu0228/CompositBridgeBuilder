@@ -204,8 +204,25 @@
             <TabItem Header="施工阶段" FontSize="9" FontFamily="HYQiHei 75S" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
-            <TabItem Header="Midas输出" FontSize="9" FontFamily="HYQiHei 75S" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Header="Midas输出" FontSize="9" FontFamily="HYQiHei 75S" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}" >
+                <StackPanel Orientation="Vertical" Background="#FFE5E5E5">
+                    <GroupBox Header="Miadas输出" Height="100.5" Margin="0,0,4,0" VerticalAlignment="Top">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110*"/>
+                                <ColumnDefinition Width="330*"/>
+                                <ColumnDefinition Width="110*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="选择版本：" VerticalAlignment="Top" FontFamily="Microsoft YaHei Light" FontSize="12" />
+                                <RadioButton Content="V15.0.0" VerticalAlignment="Top" Height="18" Margin="0,0,0,3" IsChecked="True"/>
+                                <RadioButton Content="V17.0.0" VerticalAlignment="Top" Height="18"/>
+                            </StackPanel>
+                            <ProgressBar Height="34" VerticalAlignment="Center" Margin="10" Grid.Column="1"/>
+                            <Button Content="输出" Margin="18.5,0,19.5,0" VerticalAlignment="Center" Grid.Column="2" Height="35"/>
+                        </Grid>
+                    </GroupBox>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Ansys输出" FontSize="9" FontFamily="HYQiHei 75S" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
                 <Grid Background="#FFE5E5E5"/>

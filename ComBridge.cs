@@ -190,7 +190,10 @@ namespace CompositBridgeBuilder
             }
         }
 
+        void GenerateModel()
+        {
 
+        }
 
 
 
@@ -221,9 +224,48 @@ namespace CompositBridgeBuilder
             }
 
         }   
-        
+        /// <summary>
+        /// 输出组合
+        /// </summary>
+        void WriteGroup()
+        {
 
+        }
+        /// <summary>
+        /// 输出截面
+        /// </summary>
+        void WriteSection()
+        {
+            using (FileStream fs = new FileStream(OutputMctPath, FileMode.Open, FileAccess.Write))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.BaseStream.Seek(0, SeekOrigin.End);
+                    sw.WriteLine("*SECTION");
+                    foreach(IBSection ibs in SectList)
+                    {
+                        sw.WriteLine(string.Format("{0},DBUSER,{1},CT,1,0,0,0,1,{2},YES,H,2,{3:3F}," +
+                            "{4:3F},{5:3F},{6:3F},{7:3F},{8:3F},0,0,0,0\n",ibs.ID,ibs.Name,0,ibs.H1,ibs.H2,ibs.H3,ibs.T1,ibs.T2,ibs.T3));
+                    }
+                    sw.Flush();
+                }
+            }
+        }
 
+        void WriteNodeElement()
+        {
+
+        }
+
+        void WriteConstraint()
+        {
+
+        }
+
+        void WriteLoad()
+        {
+
+        }
 
 
 

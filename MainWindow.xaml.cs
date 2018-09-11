@@ -100,8 +100,39 @@ namespace CompositBridgeBuilder
             SectionDataGird.ItemsSource = SectionList;
 
             SplitTuple st1;
-            st1 = new SplitTuple { SectID = 1, Length = 160 };
+            st1 = new SplitTuple { SectID = 1, Length = 8 };
             SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 2, Length = 20 };
+            SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 1, Length = 8 };
+            SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 4, Length = 8 };
+            SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 1, Length = 33 };
+            SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 3, Length = 6 };
+            SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 1, Length = 33 };
+            SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 4, Length = 8 };
+            SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 1, Length = 8 };
+            SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 2, Length = 20};
+            SplitList.Add(st1);
+
+            st1 = new SplitTuple { SectID = 1, Length = 8 };
+            SplitList.Add(st1);
+
             SplitDataGird.ItemsSource = SplitList;
 
         }
