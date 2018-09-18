@@ -26,6 +26,10 @@ namespace CompositBridgeBuilder
         public double DeltHeighTemp;
         public double DeltLowTemp;
         public double WindPressure;
+        readonly List<Node> NodeList;
+        readonly List<Beam> BeamList;
+        readonly List<Plate> PlateList;
+
 
 
         // Propertys
@@ -190,8 +194,21 @@ namespace CompositBridgeBuilder
             }
         }
 
-        void GenerateModel()
+
+        /// <summary>
+        /// 配置模型
+        /// </summary>
+        public void GenerateModel()
         {
+            List<double> baselist = new List<double>();
+            baselist.Add(0);
+            foreach(double i in SpanList)
+            {
+                baselist.Add(baselist.Last() + i);
+            }
+            List<double> xlist = Ext.Arange(0, baselist.Last(), 1000);
+
+
 
         }
 
@@ -350,29 +367,6 @@ namespace CompositBridgeBuilder
 
 
 
-    class IBSection
-    {
-        public int ID { set; get; }
-        public string Name { get; set; }
-        public double H1 { set; get; }
-        public double H2 { set; get; }
-        public double H3 { set; get; }
-        public double T1 { set; get; }
-        public double T2 { set; get; }
-        public double T3 { set; get; }
-        public string GetString()
-        {
-            return string.Format("{0},{1},{2},{3},{4},{5},{6},{7}", ID, Name, H1, H2, H3, T1, T2, T3);
-        }
-    }
-    class SplitTuple
-    {
-        public int SectID { set; get; }
-        public double Length { set; get; }
-    }
-    enum CMethod { YiCi, ZhuKua }
-    enum MDVersion { Md15, Md17 }
-    enum Concrete { C50, C55 }
-    enum Steel { Q345, Q420 }
+
 
 }

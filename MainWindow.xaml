@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"        
         xmlns:local="clr-namespace:CompositBridgeBuilder"
-        xmlns:System="clr-namespace:System;assembly=mscorlib" 
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        
         x:Class="CompositBridgeBuilder.MainWindow"
         mc:Ignorable="d"
         Title="工字组合梁建模助手 -version 1.0" Height="402.75" Width="590.25"
@@ -135,17 +136,20 @@
                     </DataGrid>
                     <StackPanel Grid.Column="1" Orientation="Vertical">
                         <DataGrid x:Name="SplitDataGird" FontSize="12" BorderThickness="1" GridLinesVisibility="All" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False"
-                                  ItemsSource="{Binding}" AutoGenerateColumns="False" FontFamily="Microsoft YaHei UI" Height="242.24" Margin="5,0,2,4" SelectionUnit="Cell" CanUserDeleteRows="True"
-                                  CanUserAddRows="True" HeadersVisibility="Column" InitializingNewItem="SplitDataGird_InitializingNewItem">
+                                  ItemsSource="{Binding}" AutoGenerateColumns="False" FontFamily="Microsoft YaHei UI" Height="242.24" Margin="5,0,2,4"  CanUserDeleteRows="True"
+                                  CanUserAddRows="True" HeadersVisibility="Column" InitializingNewItem="SplitDataGird_InitializingNewItem" PreviewKeyDown="SplitDataGird_KeyDown" SelectedItem="{Binding SelectedInformation}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding SectID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="No." CanUserSort="False"  Width="3*"/>
                                 <DataGridTextColumn Binding="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Header="Length" CanUserSort="False" Width="6*"/>
                             </DataGrid.Columns>
+                            
                         </DataGrid>
+
                         <Label Content="桥面板厚(m)：" VerticalContentAlignment="Center" FontSize="12" Height="23.12" Margin="5,0,2,0"/>
                         <TextBox x:Name="ThickTB" TextWrapping="Wrap" Text="示例：0.25" VerticalAlignment="Center"
                                      MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：0.25"    Margin="5,0,2,0"    />
                         <Button Content="确认" Height="27.3" VerticalAlignment="Bottom"  Margin="5,5,3,5" Click="Tab2_Click"/>
+
                     </StackPanel>
                 </Grid>
 
@@ -219,7 +223,7 @@
                                 <RadioButton Content="V17.0.0" VerticalAlignment="Top" Height="18"/>
                             </StackPanel>
                             <ProgressBar Height="34" VerticalAlignment="Center" Margin="10" Grid.Column="1"/>
-                            <Button Content="输出" Margin="18.5,0,19.5,0" VerticalAlignment="Center" Grid.Column="2" Height="35"/>
+                            <Button Content="输出" Margin="18.5,0,19.5,0" VerticalAlignment="Center" Grid.Column="2" Height="35" Click="Tab5_Click"/>
                         </Grid>
                     </GroupBox>
                 </StackPanel>

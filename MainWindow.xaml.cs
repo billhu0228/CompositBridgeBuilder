@@ -46,10 +46,17 @@ namespace CompositBridgeBuilder
             Filter = "组合梁模型文件(*.cbh)|*.cbh",
             DefaultExt="cbh",
         };
-       
-        
 
-        
+        // 状态标志
+        public bool IsInpA = false;
+        public bool IsInpB = false;
+        public bool IsInpC = false;
+        public bool IsInpD = false;
+
+
+
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -172,11 +179,11 @@ namespace CompositBridgeBuilder
                 RemoveExample(ref MBeamDistTB);
                 ComBridge.String2Double(ref curBridge.HBeamDist, HBeamDistTB.Text,1000.0);
                 RemoveExample(ref HBeamDistTB);
-
                 ComBridge.String2Enum(ref curBridge.CRank, ConcClass.Text);
                 ComBridge.String2Enum(ref curBridge.MBeamSRank, MSteelClass.Text);
                 ComBridge.String2Enum(ref curBridge.HBeamSRank, HSteelClass.Text);
                 this.ShowMessageAsync("整体布置 输入成功.", "");
+                IsInpA = true;
             }
             catch(Exception err)
             {
@@ -187,11 +194,25 @@ namespace CompositBridgeBuilder
         // 断面布置
         private void Tab2_Click(object sender, RoutedEventArgs e)
         {
+            if (!IsInpA)
+            {
+                MessageBox.Show(string.Format("请输入整体布置信息."), "ERROR");
+                return;
+            }
+
             curBridge.SectList = SectionList;
-            
-            if (SplitList.Sum(t => t.Length) != curBridge.Length/1000)
+            var aa = from item in SplitList where item.Length <= 0 select item;
+                
+
+            if (SplitList.Sum(t => t.Length) != curBridge.Length / 1000)
             {
                 MessageBox.Show(string.Format("截面布置与总长不符 : 请检查."), "ERROR");
+                return;
+            }
+            
+            else if (aa.Count()!=0)
+            {
+                MessageBox.Show(string.Format("划分节段长度不能小于0 : 请检查."), "ERROR");
                 return;
             }
             else
@@ -202,7 +223,12 @@ namespace CompositBridgeBuilder
             try
             {
                 ComBridge.String2Double(ref curBridge.PlateThick, ThickTB.Text,1000.0);
+                RemoveExample(ref ThickTB);
+
+
+
                 this.ShowMessageAsync("断面布置 输入成功.","");
+                IsInpB = true;
             }
             catch (Exception err)
             {
@@ -244,11 +270,12 @@ namespace CompositBridgeBuilder
                 RemoveExample(ref LiQingTB);
                 RemoveExample(ref HuLanTB);
                 RemoveExample(ref WindTB);
-
-
+                RemoveExample(ref TempTB);
+                RemoveExample(ref DeltTemp);
 
 
                 this.ShowMessageAsync("荷载输入成功.", "");
+                IsInpC = true;
                 
             }
             catch (Exception err)
@@ -265,6 +292,17 @@ namespace CompositBridgeBuilder
         // Midas 输出
         private void Tab5_Click(object sender, RoutedEventArgs e)
         {
+            if (IsInpA && IsInpB && IsInpC)
+            {
+                curBridge.GenerateModel();
+
+            }
+            else
+            {
+                MessageBox.Show(string.Format("模型信息输入不全 : 请检查."), "ERROR");
+
+            }
+            
 
         }
 
@@ -346,6 +384,8 @@ namespace CompositBridgeBuilder
                 }
 
             }
+            //Tab1_Click();
+
         }
 
 
@@ -360,6 +400,18 @@ namespace CompositBridgeBuilder
 
 
 
+        private void SplitDataGird_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                SplitTuple row = (SplitTuple)SplitDataGird.SelectedItem;
+
+                ObservableCollection<SplitTuple> data = (ObservableCollection<SplitTuple>)SplitDataGird.ItemsSource;
+                data.Remove(row);
+
+            }
+
+        }
     }
 
 
