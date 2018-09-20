@@ -64,6 +64,7 @@ namespace CompositBridgeBuilder
             WidhtTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             SplistTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             MBeamDistTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
+            MBeamNumTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             HBeamDistTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             MBeamFactorTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
             HuLanTB.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(MouseLeftButtonDown), true);
@@ -177,6 +178,8 @@ namespace CompositBridgeBuilder
                 RemoveExample(ref WidhtTB);
                 ComBridge.String2Double(ref curBridge.MBeamDist, MBeamDistTB.Text,1000.0);
                 RemoveExample(ref MBeamDistTB);
+                ComBridge.String2Int(ref curBridge.NMBeam, MBeamNumTB.Text);
+                RemoveExample(ref MBeamNumTB);
                 ComBridge.String2Double(ref curBridge.HBeamDist, HBeamDistTB.Text,1000.0);
                 RemoveExample(ref HBeamDistTB);
                 ComBridge.String2Enum(ref curBridge.CRank, ConcClass.Text);
@@ -217,7 +220,7 @@ namespace CompositBridgeBuilder
             }
             else
             {
-                curBridge.SectSplit = SplitList;
+                curBridge.SectSplitList = SplitList;
             }
 
             try
@@ -240,7 +243,7 @@ namespace CompositBridgeBuilder
         private void SplitDataGird_InitializingNewItem(object sender,InitializingNewItemEventArgs e)
         {
             ((SplitTuple)e.NewItem).SectID = 1;
-            ((SplitTuple)e.NewItem).Length = curBridge.Length/1000.0 - SplitList.Sum(t => t.Length);            
+            ((SplitTuple)e.NewItem).Length = (int)(curBridge.Length/1000.0 - SplitList.Sum(t => t.Length));            
         }
    
 
@@ -295,7 +298,17 @@ namespace CompositBridgeBuilder
             if (IsInpA && IsInpB && IsInpC)
             {
                 curBridge.GenerateModel();
-
+                pBar.Dispatcher.Invoke(new Action<DependencyProperty, object>(pBar.SetValue), 
+                    System.Windows.Threading.DispatcherPriority.Background, ProgressBar.ValueProperty, 10.0);
+                curBridge.WriteBegin();
+                pBar.Dispatcher.Invoke(new Action<DependencyProperty, object>(pBar.SetValue),
+                    System.Windows.Threading.DispatcherPriority.Background, ProgressBar.ValueProperty, 20.0);
+                curBridge.WriteSection();
+                pBar.Dispatcher.Invoke(new Action<DependencyProperty, object>(pBar.SetValue),
+                    System.Windows.Threading.DispatcherPriority.Background, ProgressBar.ValueProperty, 25.0);
+                curBridge.WriteNodeElement();
+                pBar.Dispatcher.Invoke(new Action<DependencyProperty, object>(pBar.SetValue),
+                    System.Windows.Threading.DispatcherPriority.Background, ProgressBar.ValueProperty, 100.0);
             }
             else
             {

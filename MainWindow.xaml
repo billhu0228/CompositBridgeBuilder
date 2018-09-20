@@ -55,34 +55,37 @@
     <Grid>
         <TabControl  Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabItems">
             <TabItem Header="整体布置" FontSize="9" FontFamily="HYQiHei 75S" IsSelected="True" Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
-                <Grid Background="#FFE5E5E5">
-                    <GroupBox Header="基本信息" Height="172" VerticalAlignment="Top" Margin="0,2,0,0">
+                <StackPanel Background="#FFE5E5E5">
+                    <GroupBox Header="基本信息" Height="209" VerticalAlignment="Top" Margin="0,0,0,5">
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="4*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Content="桥       宽(m)：" FontFamily="Microsoft YaHei" FontSize="15" Grid.Row="1" VerticalContentAlignment="Center"/>
-                            <Label Content="主梁间距(m)：" FontFamily="Microsoft YaHei" FontSize="15" RenderTransformOrigin="0.492,0.513" Grid.Row="2" VerticalContentAlignment="Center"/>
-                            <Label Content="桥跨布置(m)：" FontFamily="Microsoft YaHei" FontSize="15" VerticalContentAlignment="Center"/>
-                            <TextBox x:Name="SplistTB" Height="26" Margin="0,3.667,5,0" TextWrapping="Wrap" Text="示例：40+40+40+40" VerticalAlignment="Center" 
-                           MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：40+40+40+40" Grid.Column="1"       />
-                            <TextBox x:Name="WidhtTB" Height="26.001" Margin="0,0.042,5,0" TextWrapping="Wrap" Text="示例：27.5" VerticalAlignment="Center" 
-                           MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：27.5" Grid.Column="1" Grid.Row="1"       />
-                            <TextBox x:Name="MBeamDistTB" Height="26" Margin="0,2.254,5,0" TextWrapping="Wrap" Text="示例：4.7" VerticalAlignment="Center" 
-                           MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：4.7" Grid.Column="1" Grid.Row="2"       />
-                            <Label Content="横梁间距(m)：" FontFamily="Microsoft YaHei" FontSize="15" RenderTransformOrigin="0.492,0.513" Grid.Row="3" VerticalContentAlignment="Center"/>
-                            <TextBox x:Name="HBeamDistTB" Margin="0,4.084,5,4.541" TextWrapping="Wrap" Text="示例：5.0" 
-                                MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：5.0" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center"       />
+                            <StackPanel Orientation="Vertical" Grid.RowSpan="4">
+                                <Label Content="桥跨布置(m)：" FontFamily="Microsoft YaHei" FontSize="15" VerticalContentAlignment="Center" Height="35"/>
+                                <Label Content="桥       宽(m)：" FontFamily="Microsoft YaHei" FontSize="15" VerticalContentAlignment="Center" Height="35"/>
+                                <Label Content="主梁间距(m)：" FontFamily="Microsoft YaHei" FontSize="15" RenderTransformOrigin="0.492,0.513" VerticalContentAlignment="Center" Height="35"/>
+
+                                <Label Content="主梁片数：" FontFamily="Microsoft YaHei" FontSize="15" RenderTransformOrigin="0.492,0.513" VerticalContentAlignment="Center" Height="35" />
+
+                                <Label Content="横梁间距(m)：" FontFamily="Microsoft YaHei" FontSize="15" RenderTransformOrigin="0.492,0.513" VerticalContentAlignment="Center" Height="35"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Vertical" Grid.RowSpan="4">
+                                <TextBox x:Name="SplistTB" Height="33" TextWrapping="Wrap" Text="示例：40+40+40+40" VerticalAlignment="Center" 
+                                    MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：40+40+40+40" VerticalContentAlignment="Center" Margin="0,0,0,2"       />
+                                <TextBox x:Name="WidhtTB" Height="33" TextWrapping="Wrap" Text="示例：27.5" VerticalAlignment="Center" 
+                                    MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：27.5" VerticalContentAlignment="Center"  Margin="0,0,0,2"       />
+                                <TextBox x:Name="MBeamDistTB" Height="33" TextWrapping="Wrap" Text="示例：4.7" VerticalAlignment="Center" 
+                                    MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：4.7" VerticalContentAlignment="Center"  Margin="0,0,0,2"       />
+                                <TextBox x:Name="MBeamNumTB" Height="33" TextWrapping="Wrap" Text="示例：3" 
+                                    MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：3" VerticalAlignment="Center" VerticalContentAlignment="Center"    Margin="0,0,0,2"       />
+                                <TextBox x:Name="HBeamDistTB" Height="33" TextWrapping="Wrap" Text="示例：5.0" 
+                                    MouseLeftButtonDown="MouseLeftButtonDown" LostKeyboardFocus="LostKeyboardFocus" Tag="示例：5.0" VerticalAlignment="Center" VerticalContentAlignment="Center"       />
+                            </StackPanel>
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="材料参数" Height="78.333" VerticalAlignment="Top" Margin="0,179,0,0">
+                    <GroupBox Header="材料参数" Height="78.333" VerticalAlignment="Top">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -110,10 +113,10 @@
                         </Grid>
                     </GroupBox>
 
-                    <Button Content="确认" Margin="0,0,29.5,45"  ClickMode="Release" HorizontalAlignment="Right" Width="75" Height="28" VerticalAlignment="Bottom" Click="Tab1_Click"/>
+                    <Button Content="确认" Margin="0,0,29.5,0"  ClickMode="Release" HorizontalAlignment="Right" Width="75" Height="28" VerticalAlignment="Bottom" Click="Tab1_Click"/>
 
 
-                </Grid>
+                </StackPanel>
             </TabItem>
             <TabItem Header="断面布置" FontSize="9" FontFamily="HYQiHei 75S"  Controls:ControlsHelper.HeaderFontSize="{DynamicResource TabItemFtSize}">
                 <Grid Background="#FFE5E5E5">
@@ -142,7 +145,7 @@
                                 <DataGridTextColumn Binding="{Binding SectID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="No." CanUserSort="False"  Width="3*"/>
                                 <DataGridTextColumn Binding="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Header="Length" CanUserSort="False" Width="6*"/>
                             </DataGrid.Columns>
-                            
+
                         </DataGrid>
 
                         <Label Content="桥面板厚(m)：" VerticalContentAlignment="Center" FontSize="12" Height="23.12" Margin="5,0,2,0"/>
@@ -222,7 +225,7 @@
                                 <RadioButton Content="V15.0.0" VerticalAlignment="Top" Height="18" Margin="0,0,0,3" IsChecked="True"/>
                                 <RadioButton Content="V17.0.0" VerticalAlignment="Top" Height="18"/>
                             </StackPanel>
-                            <ProgressBar Height="34" VerticalAlignment="Center" Margin="10" Grid.Column="1"/>
+                            <ProgressBar x:Name="pBar" Height="34" VerticalAlignment="Center" Margin="10" Grid.Column="1" />
                             <Button Content="输出" Margin="18.5,0,19.5,0" VerticalAlignment="Center" Grid.Column="2" Height="35" Click="Tab5_Click"/>
                         </Grid>
                     </GroupBox>
